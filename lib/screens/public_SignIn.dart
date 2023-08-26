@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:police_complaint_app/controllers/login_controller.dart';
-import 'package:police_complaint_app/screens/HomePage.dart';
 import 'package:police_complaint_app/screens/public_SignUp.dart';
 import 'package:police_complaint_app/widgets/app_button.dart';
 import 'package:provider/provider.dart';

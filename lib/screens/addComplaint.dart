@@ -4,12 +4,10 @@ import 'package:image_picker/image_picker.dart';
 import 'package:police_complaint_app/constant/app_textfiald.dart';
 import 'package:police_complaint_app/constant/colors.dart';
 import 'package:police_complaint_app/controllers/complaint_controller.dart';
-import 'package:police_complaint_app/screens/ComplaintSuccessfull.dart';
 import 'package:police_complaint_app/widgets/appBar.dart';
 import 'package:provider/provider.dart';
 import '../constants/app_colors.dart';
 import '../constants/district_list.dart';
-import '../widgets/TabBarWidget.dart';
 import '../widgets/app_button.dart';
 import 'dart:io';
 

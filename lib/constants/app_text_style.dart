@@ -6,7 +6,7 @@ class AppTextStyle{
   static normalTextStyle(){
     return const TextStyle(
       color: AppColors.whiteColor,
-      fontWeight: FontWeight.bold,
+      fontWeight: FontWeight.bold, 
       fontSize: 20,
     );
   }

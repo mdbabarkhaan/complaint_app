@@ -24,61 +24,58 @@ class _AddStationState extends State<AddStation> {
           const TopText(headerText: 'Add Police Station'),
           Expanded(
             child: SingleChildScrollView(
-              child: Container(
-                //color: Colors.amber,
-                child: Column(
-                  children: [
-                    Card(
-                      elevation: 5,
-                      child: Column(
-                        children: [
-                          Container(
-                            decoration: const BoxDecoration(
-                                // color: Colors.black,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10))),
-                            child: Image.asset('assets/images/station.jpg'),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+              child: Column(
+                children: [
+                  Card(
+                    elevation: 5,
+                    child: Column(
                       children: [
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.01,
+                        Container(
+                          decoration: const BoxDecoration(
+                              // color: Colors.black,
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10))),
+                          child: Image.asset('assets/images/station.jpg'),
                         ),
-                        const Text('Station Name'),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.01,
-                        ),
-                        const Text('Address'),
                       ],
                     ),
-                    AppButton(
-                      height: MediaQuery.of(context).size.height * 0.05,
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const AddComplaint()));
-                      },
-                      text: 'Add Complaint',
-                      color: topcolor,
-                    ),
-                    AppButton(
-                      height: MediaQuery.of(context).size.height * 0.05,
-                      color: Colors.redAccent,
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const HomePage()));
-                      },
-                      text: 'Quit',
-                    )
-                  ],
-                ),
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.01,
+                      ),
+                      const Text('Station Name'),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.01,
+                      ),
+                      const Text('Address'),
+                    ],
+                  ),
+                  AppButton(
+                    height: MediaQuery.of(context).size.height * 0.05,
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const AddComplaint()));
+                    },
+                    text: 'Add Complaint',
+                    color: topcolor,
+                  ),
+                  AppButton(
+                    height: MediaQuery.of(context).size.height * 0.05,
+                    color: Colors.redAccent,
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const HomePage()));
+                    },
+                    text: 'Quit',
+                  )
+                ],
               ),
             ),
           ),

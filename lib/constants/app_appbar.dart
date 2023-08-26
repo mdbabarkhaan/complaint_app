@@ -1,5 +1,5 @@
-import 'package:ambulance_booking/constants/app_text_style.dart';
 import 'package:flutter/material.dart';
+import 'package:police_complaint_app/constants/app_text_style.dart';
 
 class AppBars {
   customAppBar() {
@@ -14,7 +14,7 @@ class AppBars {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text("BOOK AN\nAMBULANCE",style: AppTextStyle.extraLargeTextStyle(),),
-              Container(
+              SizedBox(
                 width: 110,
                 child: Image.asset("assets/images/ambulanceImage.png"),
               ),
