@@ -1,11 +1,15 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-
+import 'dart:io';
 import '../constants/app_colors.dart';
 import '../constants/firebase_references.dart';
 import '../utilites/utils.dart';
 
 class ComplaintController with ChangeNotifier{
+
+  final FirebaseStorage _storage = FirebaseStorage.instance;
+
   bool _loading = false;
   bool get loading => _loading;
 
@@ -15,11 +19,15 @@ class ComplaintController with ChangeNotifier{
   }
 
   userSignUp({BuildContext? context, String? name, fatherName, cnicNo, mobileNo, gender,
-    date, place, district, visit, type, details
+    date, place, district, visit, type, details, File? file
   }) async {
     setloading(true);
     try{
-      final res  = await FirebaseReferences().complaintsReference.add({
+
+      final ref = _storage.ref().child("images");
+      await ref.putFile(file!).then((p0){});
+      final String downloadUrl = await ref.getDownloadURL();
+      await FirebaseReferences().complaintsReference.add({
         'email' : FirebaseReferences().auth.currentUser!.email.toString(),
         'name' : name,
         'status' : 'processing',
@@ -33,6 +41,7 @@ class ComplaintController with ChangeNotifier{
         'visit' : visit,
         'complaintType': type,
         'complaintDetails': details,
+        'image' : downloadUrl,
       }).then((value) async {
         value.update({
           'id' : value.id
