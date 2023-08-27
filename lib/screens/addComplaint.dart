@@ -336,8 +336,8 @@ class _AddComplaintState extends State<AddComplaint> {
                     onTap: ()=> coverPagePickImages,
                     child: Row(
                       children: [
-                       coverImages!.path.isEmpty ? const Icon(Icons.attachment) : const Icon(Icons.check,color: Colors.green,)  ,
-                        coverImages!.path.isEmpty ? const Text('Select File') : const Text('Successfully')
+                       coverImages == null  ? const Icon(Icons.attachment) : const Icon(Icons.check,color: Colors.green,)  ,
+                        coverImages == null ? const Text('Select File') : const Text('Successfully')
                       ],
                     ),
                   ),
