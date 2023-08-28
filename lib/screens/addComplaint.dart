@@ -14,7 +14,10 @@ import 'dart:io';
 
 
 class AddComplaint extends StatefulWidget {
-  const AddComplaint({super.key});
+  String? name;
+  String? id;
+  String? imageUrl;
+  AddComplaint({this.name, this.id, this.imageUrl,super.key});
 
   @override
   State<AddComplaint> createState() => _AddComplaintState();
@@ -368,26 +371,34 @@ class _AddComplaintState extends State<AddComplaint> {
                 const  SizedBox(height: 10.0),
                 Consumer<ComplaintController>(
                   builder: (context, value, child) {
-                    return AppButton(
+                    return value.loading ?
+                        const Center(child: CircularProgressIndicator())
+                        : AppButton(
                       height: MediaQuery.of(context).size.height * 0.05,
                       onTap: () {
                         if(_formkey.currentState!.validate()){
-                          if(coverImages!.path.isNotEmpty){
-                            value.userSignUp(
-                                name: usernameControler.text,
-                                context: context,
-                                cnicNo: cnicControler.text,
-                                date: dateTimeControler.text,
-                                details: complaintDetailControler.text,
-                                district: selectedDistricts,
-                                fatherName: fathernameControler.text,
-                                gender: genderControler.text,
-                                mobileNo: phoneNoControler.text,
-                                place: placeControler.text,
-                                type: complaintTypeControler.text,
-                                visit: alreadyVisitControler.text,
-                                file: coverImages
-                            );
+                          if(coverImages  != null){
+                            if(selectedDistricts!.isNotEmpty){
+                              value.userSignUp(
+                                  name: usernameControler.text,
+                                  context: context,
+                                  cnicNo: cnicControler.text,
+                                  date: dateTimeControler.text,
+                                  details: complaintDetailControler.text,
+                                  district: selectedDistricts,
+                                  fatherName: fathernameControler.text,
+                                  gender: genderControler.text,
+                                  mobileNo: phoneNoControler.text,
+                                  place: placeControler.text,
+                                  type: complaintTypeControler.text,
+                                  visit: alreadyVisitControler.text,
+                                  file: coverImages,
+                                  stationId: widget.id,
+                                  stationName: widget.name
+                              );
+                            }else{
+                              Utils.toastMessage(Icons.error, Colors.red, "Please select the district", context);
+                            }
                           }else{
                             Utils.toastMessage(Icons.error, Colors.red, "Please add the case picture", context);
                           }

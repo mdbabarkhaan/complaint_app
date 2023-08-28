@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:police_complaint_app/screens/near_stations.dart';
 import 'package:police_complaint_app/screens/profileScreen.dart';
 import 'package:police_complaint_app/widgets/appBar.dart';
 import '../constant/colors.dart';
@@ -15,7 +16,7 @@ class HomePage extends StatefulWidget {
 class _PublicSignInState extends State<HomePage> {
   int _selectedIndex = 1;
   static const List<Widget> _widgetOptions = <Widget>[
-    ComplaintStatus(),
+    NearStations(),
     ShowAllStations(),
     ProfileScreen(),
   ];

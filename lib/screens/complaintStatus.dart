@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:police_complaint_app/constant/colors.dart';
+import 'package:police_complaint_app/constants/firebase_references.dart';
 import 'package:police_complaint_app/screens/ComplaintDetail.dart';
 import 'package:police_complaint_app/widgets/toptext.dart';
 // import 'package:linear_progress_bar/linear_progress_bar.dart';
@@ -9,85 +12,61 @@ class ComplaintStatus extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const TopText(headerText: 'Cheak Complaint Status'),
-        Expanded(
-          child: Container(
-          //  color: Colors.amber,
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const ComplaintDetail()));
+    return Scaffold(
+      body: Column(
+        children: [
+          const TopText(headerText: 'Cheak Complaint Status'),
+          Expanded(
+            child: StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance.collection('complaints')
+                  .where('complaintBy',isEqualTo: FirebaseReferences().auth.currentUser!.uid.toString()).snapshots(),
+              builder: (context, snapshot) {
+                if(snapshot.hasData){
+                  return ListView.builder(
+                    itemCount: snapshot.data!.docs.length,
+                    itemBuilder: (context, index) {
+                      return ComplaintContainer(
+                        showDate: snapshot.data!.docs[index]['date'],
+                        onpreess: () {
+                          Get.to(ComplaintDetail(
+                            name: snapshot.data!.docs[index]['name'],
+                            complaintType: snapshot.data!.docs[index]['complaintType'],
+                            alreadyVisit: snapshot.data!.docs[index]['visit'],
+                            placeOfIncident: snapshot.data!.docs[index]['placeOfIncident'],
+                            address: snapshot.data!.docs[index]['placeOfIncident'],
+                            district: snapshot.data!.docs[index]['districtOfIncident'],
+                            gender: snapshot.data!.docs[index]['gender'],
+                            mobileNo: snapshot.data!.docs[index]['mobileNumber'],
+                            cnic: snapshot.data!.docs[index]['cnicNo'],
+                            email: snapshot.data!.docs[index]['email'],
+                            fatherName: snapshot.data!.docs[index]['fatherName'],
+                            date: snapshot.data!.docs[index]['date'],
+                          ));
+                        },
+                        status: snapshot.data!.docs[index]['status'] == 'reject'  ? 'Rejected' :'process',
+                        child: LinearProgressIndicator(
+                          color: snapshot.data!.docs[index]['status'] == 'reject' ? Colors.red: topcolor,
+                          value: snapshot.data!.docs[index]['status'] == 'processing' ? 0.5 :
+                          snapshot.data!.docs[index]['status'] == 'accept' ? 1.0 :
+                          snapshot.data!.docs[index]['status'] == 'reject' ? 1.0 : 0.0,
+                        ),
+                      );
                     },
-                    child: ComplaintContainer(
-                      showDate: '12/08/2022',
-                      onpreess: () {
-                        //  Navigator.push(context, MaterialPageRoute(builder: (context)=>ComplaintDetail()));
-                      },
-                      status: 'process',
-                      child: const LinearProgressIndicator(
-                        color: topcolor,
-                      ),
-                    ),
-                  ),
-                  ComplaintContainer(
-                    showDate: '10/09/2022',
-                    onpreess: () {
-                      //  Navigator.push(context, MaterialPageRoute(builder: (context)=>ComplaintDetail()));
-                    },
-                    status: 'process',
-                    child: const LinearProgressIndicator(
-                      color: topcolor,
-                    ),
-                  ),
-                  ComplaintContainer(
-                    showDate: '12/10/2022',
-                    onpreess: () {
-                      //  Navigator.push(context, MaterialPageRoute(builder: (context)=>ComplaintDetail()));
-                    },
-                    status: 'Complete',
-                    child: const LinearProgressIndicator(
-                      color: topcolor,
-                    ),
-                  ),
-                  ComplaintContainer(
-                    showDate: '01/06/2023',
-                    onpreess: () {
-                      //  Navigator.push(context, MaterialPageRoute(builder: (context)=>ComplaintDetail()));
-                    },
-                    status: 'Complete',
-                    child: const LinearProgressIndicator(
-                      color: topcolor,
-                    ),
-                  ),
-                  ComplaintContainer(
-                    showDate: '15/08/2023',
-                    onpreess: () {
-                      //  Navigator.push(context, MaterialPageRoute(builder: (context)=>ComplaintDetail()));
-                    },
-                    status: 'process',
-                    child: const LinearProgressIndicator(
-                      color: topcolor,
-                    ),
-                  ),
-                ],
-              ),
+                  );
+                }else{
+                  return const  Center(child: CircularProgressIndicator(),);
+                }
+              },
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
 
 class ComplaintContainer extends StatelessWidget {
-  final Function onpreess;
+  final VoidCallback onpreess;
   final String showDate;
   final String status;
   final Widget child;
@@ -102,7 +81,7 @@ class ComplaintContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onpreess(),
+      onTap: onpreess,
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Container(

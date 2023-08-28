@@ -8,7 +8,11 @@ import 'package:police_complaint_app/widgets/toptext.dart';
 import '../constant/colors.dart';
 
 class AddStation extends StatefulWidget {
-  const AddStation({super.key});
+  String? name;
+  String? id;
+  String? imageUrl;
+  String? address;
+  AddStation({this.name, this.id, this.imageUrl,this.address, super.key});
 
   @override
   State<AddStation> createState() => _AddStationState();
@@ -35,7 +39,7 @@ class _AddStationState extends State<AddStation> {
                               // color: Colors.black,
                               borderRadius:
                                   BorderRadius.all(Radius.circular(10))),
-                          child: Image.asset('assets/images/station.jpg'),
+                          child: Image.network(widget.imageUrl.toString()),
                         ),
                       ],
                     ),
@@ -46,11 +50,11 @@ class _AddStationState extends State<AddStation> {
                       SizedBox(
                         height: MediaQuery.of(context).size.height * 0.01,
                       ),
-                      const Text('Station Name'),
+                      Text(widget.name.toString()),
                       SizedBox(
                         height: MediaQuery.of(context).size.height * 0.01,
                       ),
-                      const Text('Address'),
+                      Text(widget.address.toString()),
                     ],
                   ),
                   AppButton(
@@ -59,7 +63,11 @@ class _AddStationState extends State<AddStation> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const AddComplaint()));
+                              builder: (context) =>  AddComplaint(
+                                name: widget.name,
+                                imageUrl: widget.imageUrl,
+                                id: widget.id,
+                              )));
                     },
                     text: 'Add Complaint',
                     color: topcolor,

@@ -5,7 +5,22 @@ import 'package:police_complaint_app/widgets/toptext.dart';
 import '../constant/colors.dart';
 
 class ComplaintDetail extends StatefulWidget {
-  const ComplaintDetail({super.key});
+  String? name, fatherName, email, cnic, mobileNo, gender, date,
+      district, address, placeOfIncident, alreadyVisit, complaintType;
+  ComplaintDetail({
+    this.name,
+    this.fatherName,
+    this.email,
+    this.cnic,
+    this.mobileNo,
+    this.gender,
+    this.district,
+    this.address,
+    this.placeOfIncident,
+    this.alreadyVisit,
+    this.complaintType,
+    this.date,
+    super.key});
 
   @override
   State<ComplaintDetail> createState() => _ComplaintDetailState();
@@ -34,7 +49,7 @@ class _ComplaintDetailState extends State<ComplaintDetail> {
             child: Container(
               width: double.infinity,
               //color: Colors.amber,
-              child: const SingleChildScrollView(
+              child: SingleChildScrollView(
                 child: Column(
                   children: [
                     Text(
@@ -46,43 +61,35 @@ class _ComplaintDetailState extends State<ComplaintDetail> {
                     ),
                     ComplaintDetailItem(
                       label: 'Name',
-                      labelValue: 'abc',
+                      labelValue: widget.name.toString(),
                     ),
                     ComplaintDetailItem(
                       label: 'Father Name',
-                      labelValue: 'abc',
+                      labelValue: widget.fatherName.toString(),
                     ),
                     ComplaintDetailItem(
                       label: 'Email',
-                      labelValue: 'abc',
+                      labelValue: widget.email.toString(),
                     ),
                     ComplaintDetailItem(
                       label: 'CNIC No',
-                      labelValue: 'abc',
+                      labelValue: widget.cnic.toString(),
                     ),
                     ComplaintDetailItem(
                       label: 'Mobile No',
-                      labelValue: 'abc',
+                      labelValue: widget.mobileNo.toString(),
                     ),
                     ComplaintDetailItem(
                       label: 'Gender',
-                      labelValue: 'abc',
-                    ),
-                    ComplaintDetailItem(
-                      label: 'Country',
-                      labelValue: 'abc',
-                    ),
-                    ComplaintDetailItem(
-                      label: 'Province',
-                      labelValue: 'abc',
+                      labelValue: widget.gender.toString(),
                     ),
                     ComplaintDetailItem(
                       label: 'Home District',
-                      labelValue: 'abc',
+                      labelValue: widget.district.toString(),
                     ),
                     ComplaintDetailItem(
                       label: 'Address',
-                      labelValue: 'abc',
+                      labelValue: widget.address.toString(),
                     ),
                   
                     Divider(),
@@ -97,25 +104,24 @@ class _ComplaintDetailState extends State<ComplaintDetail> {
                       ),
                     ),
                     ReportInfoItems(
-                      rlabel: 'Date/Time of Incident',
-                      rlabelName: 'Date:12/08/2023 Time 03:00 PM',
+                      rlabel: 'Date',
+                      rlabelName: widget.date.toString(),
                     ),
                     ReportInfoItems(
                       rlabel: 'Place of Incident',
-                      rlabelName: 'ABC',
+                      rlabelName: widget.placeOfIncident.toString(),
                     ),
                     ReportInfoItems(
                       rlabel: 'District of incident',
-                      rlabelName: 'ABC',
+                      rlabelName: widget.district.toString(),
                     ),
                     ReportInfoItems(
                       rlabel: 'Already Visited Police Station',
-                      rlabelName: 'ABC',
+                      rlabelName: widget.alreadyVisit.toString(),
                     ),
                     ReportInfoItems(
                       rlabel: 'Complaint Type',
-                      rlabelName:
-                          'Date:12/08/2023 Time 03:00 PM show all the sentance about the complaint report',
+                      rlabelName: widget.complaintType.toString(),
                     ),
 
                     //       //

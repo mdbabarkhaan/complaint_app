@@ -1,13 +1,17 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:police_complaint_app/constant/app_textfiald.dart';
 import 'package:police_complaint_app/screens/public_SignIn.dart';
+import 'package:police_complaint_app/utilites/utils.dart';
 import 'package:police_complaint_app/widgets/appBar.dart';
 import 'package:police_complaint_app/widgets/app_button.dart';
 import 'package:police_complaint_app/widgets/toptext.dart';
 import 'package:provider/provider.dart';
 
 import '../constant/colors.dart';
+import '../constants/app_colors.dart';
+import '../constants/district_list.dart';
 import '../controllers/signup_controller.dart';
 
 class PublicSignUp extends StatefulWidget {
@@ -22,6 +26,7 @@ class _PublicSignUpState extends State<PublicSignUp> {
   TextEditingController emailControler = TextEditingController();
   TextEditingController passwordControler = TextEditingController();
   TextEditingController confirmPasswordCantroler = TextEditingController();
+  String? selectedDistricts;
 
   final _formkey = GlobalKey<FormState>();
   late FocusNode myfocusnode;
@@ -51,9 +56,9 @@ class _PublicSignUpState extends State<PublicSignUp> {
     }
     RegExp emailRegExp = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
     if (emailRegExp.hasMatch(value)) {
-      return 'please enter a valid email';
+      return null;
     }
-    return null;
+    return 'please enter a valid email';
   }
 
   @override
@@ -107,6 +112,92 @@ class _PublicSignUpState extends State<PublicSignUp> {
                             //suffixIcon: Icons.person,
                             autoFocus: true,
                           ),
+                          DropdownButtonHideUnderline(
+                            child: DropdownButton2<String>(
+                              isExpanded: true,
+                              hint:  Row(
+                                children: [
+                                  Icon(
+                                    Icons.list,
+                                    size: 20,
+                                    color: Colors.white,
+                                  ),
+                                  SizedBox(
+                                    width: 4,
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      'Select your Districts',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyText2!
+                                          .copyWith(height: 0, color: AppColors.whiteColor),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              items: Districts().district_list
+                                  .map((String item) => DropdownMenuItem<String>(
+                                value: item,
+                                child: Text(
+                                  item,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ))
+                                  .toList(),
+                              value: selectedDistricts,
+                              onChanged: (String? value) {
+                                setState(() {
+                                  selectedDistricts = value;
+                                });
+                              },
+                              buttonStyleData: ButtonStyleData(
+                                height: 50,
+                                width: double.infinity,
+                                padding: const EdgeInsets.only(left: 14, right: 14),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  // border: Border.all(
+                                  //   color: Colors.black26,
+                                  // ),
+                                  color: Colors.grey,
+                                ),
+                                elevation: 0,
+                              ),
+                              iconStyleData: const IconStyleData(
+                                icon: Icon(
+                                  Icons.arrow_forward_ios_outlined,
+                                ),
+                                iconSize: 14,
+                                iconEnabledColor: Colors.white,
+                                iconDisabledColor: Colors.grey,
+                              ),
+                              dropdownStyleData: DropdownStyleData(
+                                maxHeight: 200,
+                                width: 200,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(14),
+                                  color: AppColors.darkRedColor,
+                                ),
+                                offset: const Offset(-20, 0),
+                                scrollbarTheme: ScrollbarThemeData(
+                                  radius: const Radius.circular(40),
+                                  thickness: MaterialStateProperty.all<double>(6),
+                                  thumbVisibility: MaterialStateProperty.all<bool>(true),
+                                ),
+                              ),
+                              menuItemStyleData: const MenuItemStyleData(
+                                height: 40,
+                                padding: EdgeInsets.only(left: 14, right: 14),
+                              ),
+                            ),
+                          ),
                           const SizedBox(
                             height: 10,
                           ),
@@ -159,12 +250,23 @@ class _PublicSignUpState extends State<PublicSignUp> {
                          height: 50,
                          color: topcolor,
                          onTap: () {
-                           signUpController.userSignUp(
-                               context: context,
-                               email: emailControler.text,
-                               password: passwordControler.text,
-                               name: usernameControler.text,
-                           );
+                           if(_formkey.currentState!.validate()){
+                             if(selectedDistricts!.isNotEmpty){
+                               if(passwordControler.text == confirmPasswordCantroler.text){
+                                 signUpController.userSignUp(
+                                   context: context,
+                                   email: emailControler.text,
+                                   password: passwordControler.text,
+                                   name: usernameControler.text,
+                                   district: selectedDistricts,
+                                 );
+                               }else{
+                                Utils.toastMessage(Icons.error, Colors.red, "Please check you confirm password", context);
+                               }
+                             }else{
+                               Utils.toastMessage(Icons.error, Colors.red, "Please select your district", context);
+                             }
+                           }
                          },
                          text: 'Sign Up',
                          icon: Icons.arrow_forward,

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:police_complaint_app/screens/addStation.dart';
 import 'package:police_complaint_app/widgets/stationModel.dart';
@@ -16,70 +17,74 @@ class ShowAllStations extends StatelessWidget {
         Expanded(
           child: Stack(
             children: [
-              GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 4,
-                  childAspectRatio: 1 / 1.23,
-                ),
-                itemCount: allStations.length,
-                itemBuilder: (context, index) {
-                  final showdata = allStations[index];
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const AddStation()),
-                      );
-                    },
-                    child: Card(
-                      elevation: 10,
-                      // color: Colors.teal,
-                      child: Column(
-                        children: [
-                          Expanded(
-                            flex: 4,
-                            child: Container(
-                              //  height: 180,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    fit: BoxFit.fitHeight,
-                                    image: AssetImage(showdata.stationImage)),
-                                // color: Colors.teal,
-                              ),
+              StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance.collection('stations').snapshots(),
+                builder: (context, snapshot) {
+                  if(snapshot.hasData){
+                    return GridView.builder(
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 4,
+                        childAspectRatio: 1 / 1.23,
+                      ),
+                      itemCount: snapshot.data!.docs.length,
+                      itemBuilder: (context, index) {
+                        final showdata = allStations[index];
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AddStation(
+                                    name: snapshot.data!.docs[index]['name'],
+                                    imageUrl: snapshot.data!.docs[index]['imageUrl'],
+                                    id: snapshot.data!.docs[index]['id'],
+                                    address: snapshot.data!.docs[index]['address'],
+                                  )),
+                            );
+                          },
+                          child: Card(
+                            elevation: 10,
+                            // color: Colors.teal,
+                            child: Column(
+                              children: [
+                                Expanded(
+                                  flex: 4,
+                                  child: Container(
+                                    //  height: 180,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          fit: BoxFit.cover,
+                                          image: NetworkImage(snapshot.data!.docs[index]['imageUrl'])),
+                                      // color: Colors.teal,
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: Container(
+                                    color: Colors.transparent,
+                                    width: double.infinity,
+                                    child:
+                                    Center(child: Column(
+                                      children: [
+                                        Text(snapshot.data!.docs[index]['name']),
+                                        Text(snapshot.data!.docs[index]['address']),
+                                      ],
+                                    )),
+                                  ),
+                                )
+                              ],
                             ),
                           ),
-                          Expanded(
-                            flex: 1,
-                            child: Container(
-                              color: Colors.transparent,
-                              width: double.infinity,
-                              child:
-                                  Center(child: Text(showdata.stationName)),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  );
+                        );
+                      },
+                    );
+                  }else{
+                    return const Center(child: CircularProgressIndicator());
+                  }
                 },
-              ),
-              // Positioned(
-              //   bottom: 0,
-              //   right: 0,
-              //   child: Padding(
-              //     padding: const EdgeInsets.symmetric(
-              //         horizontal: 10.0, vertical: 25.0),
-              //     child: FloatingActionButton(
-              //       onPressed: () {
-              //         Navigator.push(context,MaterialPageRoute(builder: (context)=>const ComplaintStatus()));
-              //       },
-              //       backgroundColor: topcolor,
-              //       child: const Icon(Icons.location_on_outlined),
-              //     ),
-              //   ),
-              // ),
+              )
             ],
           ),
         ),

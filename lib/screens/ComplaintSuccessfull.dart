@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:police_complaint_app/screens/HomePage.dart';
 import 'package:police_complaint_app/widgets/appBar.dart';
 
@@ -49,10 +50,7 @@ class _ComplaintSuccessfullState extends State<ComplaintSuccessfull> {
                     padding: const EdgeInsets.symmetric(horizontal: 40.0),
                     child: GestureDetector(
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const HomePage()));
+                        Get.off(HomePage());
                       },
                       child: Container(
                         height: 60,
@@ -62,7 +60,7 @@ class _ComplaintSuccessfullState extends State<ComplaintSuccessfull> {
                             borderRadius: BorderRadius.circular(10)),
                         child: const Center(
                             child: Text(
-                          'Track Your Complaint ',
+                          'Go to Home Screen',
                           style: TextStyle(
                               color: whitecolor,
                               fontSize: 15,
